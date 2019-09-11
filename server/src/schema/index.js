@@ -1,7 +1,11 @@
 import { gql } from "apollo-server-express";
 
 import userSchema from "./user";
-import messageSchema from "./message";
+import landlordSchema from "./landlord";
+import leaseSchema from "./lease";
+import paymentSchema from "./payment";
+import tenantSchema from "./tenant";
+import roomSchema from "./room";
 
 const linkSchema = gql`
   type Query {
@@ -17,4 +21,12 @@ const linkSchema = gql`
   }
 `;
 
-export default [linkSchema, userSchema, messageSchema];
+export default [
+  linkSchema,
+  userSchema,
+  landlordSchema,
+  leaseSchema,
+  paymentSchema,
+  tenantSchema,
+  roomSchema
+];

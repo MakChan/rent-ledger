@@ -6,7 +6,6 @@ import 'dotenv/config';
 
 import schema from "./schema";
 import resolvers from "./resolvers";
-import models from "./models";
 
 const app = express();
 app.use(cors());
@@ -16,7 +15,7 @@ const server = new ApolloServer({
   resolvers,
   context: {
     models,
-    me: models.users[1]
+    // me: models.users[1]
   }
 });
 
