@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -18,9 +19,9 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-userSchema.statics.findByLogin = async function(login) {
+userSchema.statics.findByLogin = async function(username) {
   const user = await this.findOne({
-    username: login
+    username: username
   });
   return user;
 };

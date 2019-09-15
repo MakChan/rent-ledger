@@ -5,7 +5,10 @@ const roomSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  leases: [{ type: mongoose.Schema.Types.ObjectId, ref: "Lease" }]
+  landlordId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Landlord"
+  }
 });
 
 const Room = mongoose.model("Room", roomSchema);

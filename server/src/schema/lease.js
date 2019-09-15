@@ -12,7 +12,7 @@ export default gql`
     extraCharges: Int
     initialReading: Int
     current: Boolean!
-    date: Date!
+    date: String!
     tenant: Tenant!
     payments: [Payment!]
   }
