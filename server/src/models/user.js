@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
 userSchema.statics.findByLogin = async function(username) {
   const user = await this.findOne({
     username: username
-  });
+  }).populate("landlord");
   return user;
 };
 

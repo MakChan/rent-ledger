@@ -7,12 +7,13 @@ export default gql`
   }
 
   extend type Mutation {
-    createUser(name: String!, username: String!, password: String!): Token!
-    logIn(username: String!, password: String!): Token!
+    createUser(name: String!, username: String!, password: String!): UserPayload!
+    logIn(username: String!, password: String!): UserPayload!
   }
 
-  type Token {
+  type UserPayload {
     token: String!
+    user: User!
   }
 
   type User {

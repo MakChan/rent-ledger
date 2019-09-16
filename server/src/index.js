@@ -13,7 +13,9 @@ app.use(cors());
 
 const getMe = async req => {
   const token = req.headers["x-token"];
-  if (token) {
+  console.log('token ==>', token); // TODO: remove this
+  if (token && token != "null") {
+    console.log("if")
     try {
       return await jwt.verify(token, process.env.SECRET);
     } catch (e) {

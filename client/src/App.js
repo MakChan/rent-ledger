@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { Route, Switch, Redirect } from "react-router-dom";
+
+import Home from "./pages/Home";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import NoMatch from "./pages/NoMatch";
+
+import { useAuthContext } from "./utils/authContext";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Switch>
+        <AuthRoute path="/" exact component={Home} />
+        <Route path="/login" exact component={SignIn} />
+        <Route path="/register" exact component={SignUp} />
+        <Route component={NoMatch} />
+      </Switch>
     </div>
   );
 }
+
+const AuthRoute = ({ component: Component, ...rest }) => {
+  const { userState } = useAuthContext();
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        !userState.isLoggedIn ? (
+          <Redirect to={{ pathname: "/login" }} />
+        ) : (
+          <main>
+            <Component {...props} />
+          </main>
+        )
+      }
+    />
+  );
+};
 
 export default App;

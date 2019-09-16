@@ -14,21 +14,23 @@ export default {
       return await models.User.findOne({ _id: _id }).populate("landlord");
     },
     me: async (parent, args, { models, me }) => {
-      const mess = await models.User.findOne({ _id: me._id }).populate("landlord");
-      console.log('mess ==>', mess); // TODO: remove this
-      return mess;
+      console.log('me ==>', me); // TODO: remove this
+      return await models.User.findOne({ _id: me._id }).populate("landlord");
     }
   },
   Mutation: {
     createUser: async (parent, { name, username, password }, { models }) => {
+      // console.log("name, username, password ==>", name, username, password); // TODO: remove this
       const landlord = await models.Landlord.create({ name });
-      const user = models.User.create({
+      const user = await models.User.create({
         username: username,
         password: password,
         landlord: landlord._id
       });
 
-      return { token: createToken(user, "30d") };
+      user.landlord = landlord;
+      console.log('user ==>', user); // TODO: remove this
+      return { token: createToken(user, "30d"), user };
     },
     logIn: async (parent, { username, password }, { models }) => {
       const user = await models.User.findByLogin(username);
@@ -41,7 +43,8 @@ export default {
       if (!isValid) {
         throw new AuthenticationError("Invalid password.");
       }
-      return { token: createToken(user, "30d") };
+      console.log('user ==>', user); // TODO: remove this
+      return { token: createToken(user, "30d"), user };
     }
   }
 
