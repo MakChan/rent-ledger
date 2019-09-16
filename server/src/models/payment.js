@@ -13,7 +13,7 @@ const paymentSchema = new mongoose.Schema({
   balance: {
     type: Number
   },
-  date: {
+  datePaid: {
     type: Date,
     default: Date.now
   }

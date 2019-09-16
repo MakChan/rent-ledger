@@ -1,9 +1,29 @@
 import { gql } from "apollo-server-express";
 
 export default gql`
+  input LeaseInput {
+    rent: Int
+    extraCharges: Int
+    initialReading: Int
+    current: Boolean
+    room: String
+    date: Date
+  }
+
+  input TenantInput {
+    name: String!
+    phoneNumber: String
+    aadharNumber: String
+  }
+
   extend type Query {
     lease(_id: String!): Lease
-    payments(_id: String!): [Payment!]
+    leases(_id: String!): [Lease!]
+  }
+
+  extend type Mutation {
+    createTenantWithLease(lease: LeaseInput!, tenant: TenantInput!): Lease
+    updateLease(_id: String!, lease: LeaseInput): Lease
   }
 
   type Lease {
@@ -12,7 +32,8 @@ export default gql`
     extraCharges: Int
     initialReading: Int
     current: Boolean!
-    date: String!
+    date: Date!
+    room: Room!
     tenant: Tenant!
     payments: [Payment!]
   }

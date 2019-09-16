@@ -1,8 +1,21 @@
 import { gql } from "apollo-server-express";
 
 export default gql`
+  input PaymentInput {
+    reading: Int
+    electricityCharges: Int
+    totalPaid: Int
+    balance: Int
+    datePaid: Date
+  }
+
   extend type Query {
     payment(_id: String!): Payment
+    payments(_id: String!): [Payment!]
+  }
+
+  extend type Mutation {
+    createPayment(payment: PaymentInput, leaseId: String): Payment
   }
 
   type Payment {
@@ -11,5 +24,6 @@ export default gql`
     electricityCharges: Int!
     totalPaid: Int
     balance: Int
+    datePaid: Date!
   }
 `;

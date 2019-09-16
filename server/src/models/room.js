@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const roomSchema = new mongoose.Schema({
   roomNo: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   landlordId: {
     type: mongoose.Schema.Types.ObjectId,

@@ -4,7 +4,6 @@ export default gql`
   extend type Query {
     room(_id: String!): Room
     rooms(_id: String!): [Room!]
-    leases(_id: String!): [Lease!]
   }
 
   extend type Mutation {

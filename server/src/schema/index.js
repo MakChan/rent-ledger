@@ -8,6 +8,8 @@ import tenantSchema from "./tenant";
 import roomSchema from "./room";
 
 const linkSchema = gql`
+  scalar Date
+
   type Query {
     _: Boolean
   }
