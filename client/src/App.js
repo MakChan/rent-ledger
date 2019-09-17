@@ -23,7 +23,7 @@ const Container = styled.div`
 function App() {
   const { userState } = useAuthContext();
 
-  if (!userState.loaded) return <Spinner size="large" />;
+  if (!userState.loaded) return <Spinner size="medium" />;
 
   return (
     <Container>
@@ -31,24 +31,33 @@ function App() {
       <Switch>
         <Route path="/login" exact component={SignIn} />
         <Route path="/register" exact component={SignUp} />
-        <AuthGuard user={userState.user}>
-          <Route path="/" exact component={Home} />
-          <Route path="/tenant/add" exact component={AddTenant} />
-        </AuthGuard>
+
+        <AuthRoute path="/" exact component={Home} />
+        <AuthRoute path="/tenants/add" exact component={AddTenant} />
+
         <Route component={NoMatch} />
       </Switch>
     </Container>
   );
 }
-const AuthGuard = props => {
-  // const { history } = useRouter();
-  // useEffect(() => {
-  //   console.log("AuthGuard"); // TODO: remove this
-  //   if (userState.user) history.push("/login");
-  // }, []);
 
-  if (!props.user) return <Redirect to={{ pathname: "/login" }} />;
-  return <main>{props.children}</main>;
+const AuthRoute = ({ component: Component, ...rest }) => {
+  const { userState } = useAuthContext();
+
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        !userState.user ? (
+          <Redirect to={{ pathname: "/login" }} />
+        ) : (
+          <main>
+            <Component {...props} />
+          </main>
+        )
+      }
+    />
+  );
 };
 
 export default App;

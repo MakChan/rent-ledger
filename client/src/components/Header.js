@@ -5,7 +5,7 @@ const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
-  background: beige;
+  background: #c4a3ff;
   border: 2px solid black;
 `;
 

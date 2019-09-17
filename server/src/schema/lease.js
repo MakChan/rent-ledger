@@ -8,6 +8,7 @@ export default gql`
     current: Boolean
     room: String
     date: Date
+    remark: String
   }
 
   input TenantInput {
@@ -28,13 +29,14 @@ export default gql`
 
   type Lease {
     _id: String!
-    rent: Int!
+    rent: Int
     extraCharges: Int
     initialReading: Int
     current: Boolean!
     date: Date!
     room: Room!
-    tenant: Tenant!
+    remark: String
+    tenant: Tenant
     payments: [Payment!]
   }
 `;

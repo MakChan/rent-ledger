@@ -1,18 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
 
-const GET_ROOMS = gql`
-  query getRooms($landlordId: String!) {
-    rooms(_id: $landlordId) {
-      roomNo
-      lease {
-        rent
-        current
-      }
-    }
-  }
-`;
+import { GET_ROOMS } from "../utils/queries";
 
 function Rooms({ userState }) {
   const { data, loading } = useQuery(GET_ROOMS, {
@@ -27,7 +16,8 @@ function Rooms({ userState }) {
         : data.rooms.map(room => (
             <div key={room.roomNo}>
               <h4>
-                {room.roomNo} - {room.lease ? room.lease.rent : "Vacant"}
+                {room.roomNo} -{" "}
+                {room.currentLease ? room.currentLease.tenant.name : "Vacant"}
               </h4>
             </div>
           ))}

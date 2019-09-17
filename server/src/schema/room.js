@@ -14,7 +14,7 @@ export default gql`
     _id: String!
     roomNo: String!
     landlordId: String!
-    lease: Lease
+    currentLease: Lease
   }
 
   type Room {

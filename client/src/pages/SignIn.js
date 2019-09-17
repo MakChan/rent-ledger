@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 import Button, { ButtonGroup } from "@atlaskit/button";
@@ -41,11 +41,9 @@ const SignIn = () => {
     }
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     if (userState.user) history.push("/");
-  },[userState.user])
-
-
+  }, [userState.user]);
 
   return (
     <div
@@ -84,6 +82,13 @@ const SignIn = () => {
 
             <FormFooter>
               <ButtonGroup>
+                <Button
+                  onClick={() => history.push("/register")}
+                  appearance="primary"
+                  isLoading={submitting}
+                >
+                  Register
+                </Button>
                 <Button
                   type="submit"
                   appearance="primary"

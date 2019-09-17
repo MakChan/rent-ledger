@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 
 const leaseSchema = new mongoose.Schema({
   rent: {
-    type: Number,
-    required: true
+    type: Number
   },
   extraCharges: {
     type: Number
@@ -17,6 +16,9 @@ const leaseSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  remark: {
+    type: String
   },
   room: { type: mongoose.Schema.Types.ObjectId, ref: "Room" },
   tenant: { type: mongoose.Schema.Types.ObjectId, ref: "Tenant" },

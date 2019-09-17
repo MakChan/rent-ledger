@@ -9,6 +9,10 @@ const roomSchema = new mongoose.Schema({
   landlordId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Landlord"
+  },
+  currentLease: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Lease"
   }
 });
 
