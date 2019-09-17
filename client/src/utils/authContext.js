@@ -15,7 +15,7 @@ const GET_ME = gql`
   }
 `;
 
-const initialState = { user: undefined, isLoggedIn: true };
+const initialState = { user: undefined, loaded: false };
 
 export const AuthContext = React.createContext({
   userState: initialState,
@@ -41,12 +41,12 @@ export const UserProvider = props => {
       console.log("getMe"); // TODO: remove this
       // getMe({ variables: { asfas: true } });
       setUserState({
-        isLoggedIn: true,
+        loaded: true,
         user: JSON.parse(localStorage.getItem("user"))
       });
     } else {
       setUserState({
-        isLoggedIn: false
+        loaded: true
       });
     }
   }, []);
@@ -55,12 +55,12 @@ export const UserProvider = props => {
     console.log("data ==>", data); // TODO: remove this
     localStorage.setItem("x-token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
-    setUserState({ user: data.user });
+    setUserState({ user: data.user, loaded: true });
   };
 
   const logOut = () => {
     localStorage.removeItem("x-token");
-    setUserState({ user: undefined, isLoggedIn: false });
+    setUserState({ user: undefined, loaded: true });
   };
 
   return (
