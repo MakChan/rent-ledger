@@ -4,9 +4,11 @@ export default gql`
   input PaymentInput {
     reading: Int
     electricityCharges: Int
+    paidElectricityCharges: Int
     totalPaid: Int
     balance: Int
     datePaid: Date
+    remark: String
   }
 
   extend type Query {
@@ -20,10 +22,12 @@ export default gql`
 
   type Payment {
     _id: String!
-    reading: Int!
-    electricityCharges: Int!
+    reading: Int
+    electricityCharges: Int
+    paidElectricityCharges: Int
     totalPaid: Int
     balance: Int
-    datePaid: Date!
+    datePaid: Date
+    remark: String
   }
 `;

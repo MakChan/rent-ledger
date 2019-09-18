@@ -11,7 +11,7 @@ export default {
     }
   },
   Mutation: {
-    createPayment: async (parent, { payment, leaseId }, { models }) => {
+    createPayment: async (parent, { payment, leaseId }, { models, me }) => {
       const newPayment = await models.Payment.create(payment);
       const lease = await models.Lease.update(
         { _id: leaseId },
@@ -20,7 +20,7 @@ export default {
         }
       );
 
-      return payment;
+      return newPayment;
     }
   }
 };

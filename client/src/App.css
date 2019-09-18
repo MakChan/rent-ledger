@@ -1,7 +1,11 @@
 /* @import-normalize; */
-@import '../node_modules/@atlaskit/css-reset/dist/bundle.css';
+@import "../node_modules/@atlaskit/css-reset/dist/bundle.css";
+
+html {
+  height: unset;
+}
 
 body {
-  font-family: 'Work Sans', sans-serif;
-  /* background-color: #20201f */
+  font-family: "Work Sans", sans-serif;
+  background-color: #f5f6f8;
 }

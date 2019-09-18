@@ -16,3 +16,23 @@ export const GET_ROOMS = gql`
     }
   }
 `;
+
+export const GET_CURRENT_LEASES = gql`
+  query {
+    currentLeases {
+      _id
+      rent
+      initialReading
+      tenant {
+        name
+      }
+      lastPayment {
+        reading
+        balance
+      }
+      room {
+        roomNo
+      }
+    }
+  }
+`;

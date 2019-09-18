@@ -42,17 +42,6 @@ const SignUp = () => {
   });
 
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "400px",
-        maxWidth: "100%",
-        margin: "10% auto",
-        flexDirection: "column",
-        backgroundColor: "#fbfbfb",
-        padding: "2rem"
-      }}
-    >
       <Form onSubmit={data => createUser({ variables: data })}>
         {({ formProps, submitting }) => (
           <form {...formProps}>
@@ -111,20 +100,24 @@ const SignUp = () => {
 
             <FormFooter>
               <ButtonGroup>
-                {/* <Button appearance="subtle">Login</Button> */}
+                <Button
+                  onClick={() => history.push("/login")}
+                  appearance="subtle"
+                >
+                  Login
+                </Button>
                 <Button
                   type="submit"
                   appearance="primary"
                   isLoading={submitting}
                 >
-                  Sign up
+                  Register
                 </Button>
               </ButtonGroup>
             </FormFooter>
           </form>
         )}
       </Form>
-    </div>
   );
 };
 

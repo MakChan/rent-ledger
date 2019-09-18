@@ -13,11 +13,12 @@ app.use(cors());
 
 const getMe = async req => {
   const token = req.headers["x-token"];
-  console.log('token ==>', token); // TODO: remove this
+  console.log("token ==>", token); // TODO: remove this
   if (token && token != "null") {
-    console.log("if")
+    console.log("if");
     try {
-      return await jwt.verify(token, process.env.SECRET);
+      const me = await jwt.verify(token, process.env.SECRET);
+      return await models.User.findOne({ _id: me._id });
     } catch (e) {
       throw new AuthenticationError("Your session expired. Sign in again.");
     }
@@ -41,6 +42,6 @@ server.applyMiddleware({ app, path: "/graphql" });
 
 connectDb().then(async () => {
   app.listen(process.env.PORT, () =>
-    console.log(`Example app listening on port ${process.env.PORT}!`)
+    console.log(`Server listening on port ${process.env.PORT}!`)
   );
 });

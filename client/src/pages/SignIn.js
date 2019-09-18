@@ -46,62 +46,45 @@ const SignIn = () => {
   }, [userState.user]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "400px",
-        maxWidth: "100%",
-        margin: "10% auto",
-        flexDirection: "column",
-        backgroundColor: "#fbfbfb",
-        padding: "2rem"
-      }}
-    >
-      <Form onSubmit={data => logIn({ variables: data })}>
-        {({ formProps, submitting }) => (
-          <form {...formProps}>
-            <Field name="username" label="User name" isRequired defaultValue="">
-              {({ fieldProps, error }) => (
-                <TextField autoComplete="off" {...fieldProps} />
-              )}
-            </Field>
-            <Field
-              name="password"
-              label="Password"
-              defaultValue=""
-              isRequired
-              validate={value => (value.length < 8 ? "TOO_SHORT" : undefined)}
-            >
-              {({ fieldProps, error, valid }) => (
-                <>
-                  <TextField type="password" {...fieldProps} />
-                  {error && <ErrorMessage>Wrong Password</ErrorMessage>}
-                </>
-              )}
-            </Field>
+    <Form onSubmit={data => logIn({ variables: data })}>
+      {({ formProps, submitting }) => (
+        <form {...formProps}>
+          <Field name="username" label="User name" isRequired defaultValue="">
+            {({ fieldProps, error }) => (
+              <TextField autoComplete="off" {...fieldProps} />
+            )}
+          </Field>
+          <Field
+            name="password"
+            label="Password"
+            defaultValue=""
+            isRequired
+            validate={value => (value.length < 8 ? "TOO_SHORT" : undefined)}
+          >
+            {({ fieldProps, error, valid }) => (
+              <>
+                <TextField type="password" autoComplete="off" {...fieldProps} />
+                {error && <ErrorMessage>Wrong Password</ErrorMessage>}
+              </>
+            )}
+          </Field>
 
-            <FormFooter>
-              <ButtonGroup>
-                <Button
-                  onClick={() => history.push("/register")}
-                  appearance="primary"
-                  isLoading={submitting}
-                >
-                  Register
-                </Button>
-                <Button
-                  type="submit"
-                  appearance="primary"
-                  isLoading={submitting}
-                >
-                  Login
-                </Button>
-              </ButtonGroup>
-            </FormFooter>
-          </form>
-        )}
-      </Form>
-    </div>
+          <FormFooter>
+            <ButtonGroup>
+              <Button
+                onClick={() => history.push("/register")}
+                appearance="subtle"
+              >
+                Register
+              </Button>
+              <Button type="submit" appearance="primary" isLoading={submitting}>
+                Login
+              </Button>
+            </ButtonGroup>
+          </FormFooter>
+        </form>
+      )}
+    </Form>
   );
 };
 

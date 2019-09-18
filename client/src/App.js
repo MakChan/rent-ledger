@@ -9,15 +9,20 @@ import AddTenant from "./pages/AddTenant";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import NoMatch from "./pages/NoMatch";
+import AcceptPayment from "./pages/AcceptPayment";
 
 import { useAuthContext } from "./utils/authContext";
-import { useRouter } from "./utils/routerContext";
+// import { useRouter } from "./utils/routerContext";
 
 import Header from "./components/Header";
+import AuthRoute from "./components/AuthRoute";
 
 const Container = styled.div`
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 700px;
+  min-height: 80vh;
+  margin: 5% auto 0;
+  box-shadow: 0 0px 20px #e7e7e7;
+  background-color: #fbfbfb;
 `;
 
 function App() {
@@ -26,23 +31,23 @@ function App() {
   if (!userState.loaded) return <Spinner size="medium" />;
 
   return (
-    <Container>
-      <Header user={userState.user} />
-      <Switch>
-        <Route path="/login" exact component={SignIn} />
-        <Route path="/register" exact component={SignUp} />
+    <Switch>
+      <AuthRoute path="/login" exact component={SignIn} title="Login" />
+      <AuthRoute path="/register" exact component={SignUp} title="Register" />
 
-        <AuthRoute path="/" exact component={Home} />
-        <AuthRoute path="/tenants/add" exact component={AddTenant} />
+      <Container>
+        <GuardedRoute path="/" exact component={Home} />
+        <GuardedRoute path="/tenants/add" exact component={AddTenant} />
+        <GuardedRoute path="/payment/accept" exact component={AcceptPayment} />
+      </Container>
 
-        <Route component={NoMatch} />
-      </Switch>
-    </Container>
+      <Route component={NoMatch} />
+    </Switch>
   );
 }
 
-const AuthRoute = ({ component: Component, ...rest }) => {
-  const { userState } = useAuthContext();
+const GuardedRoute = ({ component: Component, ...rest }) => {
+  const { userState, logOut } = useAuthContext();
 
   return (
     <Route
@@ -51,9 +56,12 @@ const AuthRoute = ({ component: Component, ...rest }) => {
         !userState.user ? (
           <Redirect to={{ pathname: "/login" }} />
         ) : (
-          <main>
-            <Component {...props} />
-          </main>
+          <>
+            <Header user={userState.user} logOut={logOut} />
+            <main>
+              <Component {...props} />
+            </main>
+          </>
         )
       }
     />

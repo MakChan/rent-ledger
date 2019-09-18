@@ -20,11 +20,26 @@ export default gql`
   extend type Query {
     lease(_id: String!): Lease
     leases(_id: String!): [Lease!]
+    currentLeases: [LeasePayload!]
   }
 
   extend type Mutation {
     createTenantWithLease(lease: LeaseInput!, tenant: TenantInput!): Lease
     updateLease(_id: String!, lease: LeaseInput): Lease
+  }
+
+  type LeasePayload {
+    _id: String!
+    rent: Int
+    extraCharges: Int
+    initialReading: Int
+    current: Boolean!
+    date: Date!
+    remark: String
+    room: Room!
+    landlord: Landlord
+    tenant: Tenant!
+    lastPayment: Payment
   }
 
   type Lease {
@@ -34,9 +49,10 @@ export default gql`
     initialReading: Int
     current: Boolean!
     date: Date!
-    room: Room!
     remark: String
-    tenant: Tenant
+    room: Room!
+    landlord: Landlord
+    tenant: Tenant!
     payments: [Payment!]
   }
 `;

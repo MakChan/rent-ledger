@@ -5,13 +5,21 @@ const paymentSchema = new mongoose.Schema({
     type: Number
   },
   electricityCharges: {
-    type: Number
+    type: Number,
+    default: 0
+  },
+  paidElectricityCharges: {
+    type: Number,
+    default: 0
   },
   totalPaid: {
     type: Number
   },
   balance: {
     type: Number
+  },
+  remark: {
+    type: String
   },
   datePaid: {
     type: Date,

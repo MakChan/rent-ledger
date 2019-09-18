@@ -5,7 +5,8 @@ const leaseSchema = new mongoose.Schema({
     type: Number
   },
   extraCharges: {
-    type: Number
+    type: Number,
+    default: 0
   },
   initialReading: {
     type: Number
@@ -20,6 +21,7 @@ const leaseSchema = new mongoose.Schema({
   remark: {
     type: String
   },
+  landlord: { type: mongoose.Schema.Types.ObjectId, ref: "Landlord" },
   room: { type: mongoose.Schema.Types.ObjectId, ref: "Room" },
   tenant: { type: mongoose.Schema.Types.ObjectId, ref: "Tenant" },
   payments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Payment" }]

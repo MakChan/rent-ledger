@@ -10,14 +10,14 @@ import Rooms from "../components/Rooms";
 const Box = styled.div`
   display: flex;
   justify-content: space-between;
-  border: 2px solid black;
 `;
 
 const VerticalBox = styled.div`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   padding: 1rem;
-  border-left: 2px solid black;
+  border-left: 1px dotted;
 `;
 
 function Home() {
@@ -28,7 +28,11 @@ function Home() {
     <Box>
       <Rooms userState={userState} />
       <VerticalBox>
-        <Button type="submit" appearance="primary">
+        <Button
+          type="submit"
+          appearance="primary"
+          onClick={() => history.push("payment/accept")}
+        >
           Accept Payment
         </Button>
         <Button
