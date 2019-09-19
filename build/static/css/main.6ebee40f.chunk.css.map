@@ -1,0 +1,1 @@
+{"version":3,"sources":["App.css"],"names":[],"mappings":"AAGA,KACE,YACF,CAEA,KACE,gCAAoC,CACpC,wBACF","file":"main.6ebee40f.chunk.css","sourcesContent":["/* @import-normalize; */\n@import \"../node_modules/@atlaskit/css-reset/dist/bundle.css\";\n\nhtml {\n  height: unset;\n}\n\nbody {\n  font-family: \"Work Sans\", sans-serif;\n  background-color: #f5f6f8;\n}\n"]}

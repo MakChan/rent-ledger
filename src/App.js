@@ -1,0 +1,77 @@
+import React, { Suspense, lazy } from "react";
+import "./App.css";
+import { Route, Switch, Redirect } from "react-router-dom";
+import styled from "styled-components";
+
+import { useAuthContext } from "./utils/authContext";
+
+import Header from "./components/Header";
+import AuthRoute from "./components/AuthRoute";
+import { Loader } from "./components/Loader";
+
+import Home from "./pages/Home";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+
+const AddTenant = lazy(() => import("./pages/AddTenant"));
+const AcceptPayment = lazy(() => import("./pages/AcceptPayment"));
+const NoMatch = lazy(() => import("./pages/NoMatch"));
+
+const Container = styled.div`
+  max-width: 700px;
+  min-height: 80vh;
+  margin: 5% auto 0;
+  box-shadow: 0 0px 20px #e7e7e7;
+  background-color: #fbfbfb;
+`;
+
+function App() {
+  const { userState } = useAuthContext();
+
+  if (!userState.loaded) return <Loader size="medium" />;
+
+  return (
+    <Switch>
+      <AuthRoute path="/login" exact component={SignIn} title="Login" />
+      <AuthRoute path="/register" exact component={SignUp} title="Register" />
+
+      <Container>
+        <Suspense fallback={<Loader size="large" />}>
+          <GuardedRoute path="/" exact component={Home} />
+          <GuardedRoute path="/tenants/add" exact component={AddTenant} />
+          <GuardedRoute
+            path="/payment/accept"
+            exact
+            component={AcceptPayment}
+          />
+        </Suspense>
+      </Container>
+
+      <Route component={NoMatch} />
+    </Switch>
+  );
+}
+
+const GuardedRoute = ({ component: Component, ...rest }) => {
+  const { userState, logOut } = useAuthContext();
+
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        !userState.user ? (
+          <Redirect to={{ pathname: "/login" }} />
+        ) : (
+          <>
+            <Header user={userState.user} logOut={logOut} />
+            <main>
+              <Component {...props} />
+            </main>
+          </>
+        )
+      }
+    />
+  );
+};
+
+export default App;
