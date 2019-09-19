@@ -68,7 +68,8 @@ const ADD_PAYMENT = gql`
 
 const calculateElectricity = (reading, lease) => {
   let charges = 0;
-  if (!lease.lastPayment.reading)
+  // if (!lease.lastPayment && !lease.lastPayment.reading)
+  if (!lease.lastPayment)
     charges = (reading - lease.initialReading) * PER_UNIT_CHARGE;
   else charges = (reading - lease.lastPayment.reading) * PER_UNIT_CHARGE;
   return charges > 0 ? charges : 0;
@@ -92,9 +93,12 @@ const calculator = createDecorator(
           );
       } else charges = calculateElectricity(reading, values.lease.value);
 
-      const balance = values.lease.value.lastPayment.balance
-        ? values.lease.value.lastPayment.balance
-        : 0;
+      const balance =
+        values.lease.value.lastPayment &&
+        (values.lease.value.lastPayment.balance
+          ? values.lease.value.lastPayment.balance
+          : 0);
+
       const extraCharges = values.lease.value.extraCharges
         ? values.lease.value.extraCharges
         : 0;
@@ -211,7 +215,8 @@ const AddTenant = () => {
                 <StyledDiv>
                   Previous Reading :{" "}
                   <span>
-                    {values.lease.value.lastPayment.reading
+                    {values.lease.value.lastPayment &&
+                    values.lease.value.lastPayment.reading
                       ? values.lease.value.lastPayment.reading
                       : values.lease.value.initialReading}
                   </span>
@@ -227,7 +232,7 @@ const AddTenant = () => {
                         <TextField
                           autoComplete="off"
                           placeholder={
-                            values.lease.value.lastPayment.reading
+                            values.lease.value.lastPayment && values.lease.value.lastPayment.reading
                               ? values.lease.value.lastPayment.reading
                               : values.lease.value.initialReading
                           }
@@ -250,12 +255,13 @@ const AddTenant = () => {
                   </StyledDiv>
                 )}
 
-                {values.lease.value.lastPayment.balance !== 0 && (
-                  <StyledDiv>
-                    Last Balance :{" "}
-                    <span>{values.lease.value.lastPayment.balance}</span>
-                  </StyledDiv>
-                )}
+                {values.lease.value.lastPayment &&
+                  values.lease.value.lastPayment.balance !== 0 && (
+                    <StyledDiv>
+                      Last Balance :{" "}
+                      <span>{values.lease.value.lastPayment.balance}</span>
+                    </StyledDiv>
+                  )}
 
                 <StyledDiv>
                   Total Rent : <span>{values.totalRent}</span>

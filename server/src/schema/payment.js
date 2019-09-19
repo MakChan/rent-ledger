@@ -3,10 +3,10 @@ import { gql } from "apollo-server-express";
 export default gql`
   input PaymentInput {
     reading: Int
-    electricityCharges: Int
-    paidElectricityCharges: Int
+    electricityCharges: Float
+    paidElectricityCharges: Float
     totalPaid: Int
-    balance: Int
+    balance: Float
     datePaid: Date
     remark: String
   }
@@ -23,10 +23,10 @@ export default gql`
   type Payment {
     _id: String!
     reading: Int
-    electricityCharges: Int
-    paidElectricityCharges: Int
-    totalPaid: Int
-    balance: Int
+    electricityCharges: Float
+    paidElectricityCharges: Float
+    totalPaid: Float
+    balance: Float
     datePaid: Date
     remark: String
   }

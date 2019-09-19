@@ -1,1 +1,1 @@
-export const PER_UNIT_CHARGE = 8.5;
+export const PER_UNIT_CHARGE = 7.5;
