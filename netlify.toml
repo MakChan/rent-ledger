@@ -1,7 +1,6 @@
-[build]
-    publish = "client/build/"
+[build]   
     command = "yarn build"
-
+    publish = "client/build/" 
     functions = "built-lambda"
 
 [[redirects]]
