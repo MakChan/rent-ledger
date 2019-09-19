@@ -7,10 +7,12 @@
   "license": "MIT",
   "scripts": {
     "client": "cd client && yarn start",
-    "server": "yarn start:lambda",
+    "server": "netlify-lambda serve server/src --config ./webpack.functions.js",
     "start": "concurrently -n client,server \"yarn client\" \"yarn server\"",
+    "prebuild" : "cd client && yarn install",
+    "build:client": "cd client && yarn build",
     "build:lambda": "netlify-lambda build server/src",
-    "start:lambda": "netlify-lambda serve server/src --config ./webpack.functions.js"
+    "build" : "concurrently -n \"yarn build:lambda\" \"yarn build:client\""
   },
   "dependencies": {
     "concurrently": "^4.1.2",
