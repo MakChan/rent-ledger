@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "@atlaskit/button";
 import HomeIcon from "@atlaskit/icon/glyph/home";
 
 import { useRouter } from "../utils/routerContext";
+import Button from "../components/ThemedButton";
 
 const Nav = styled.nav`
   display: flex;

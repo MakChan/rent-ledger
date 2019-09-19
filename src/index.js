@@ -9,8 +9,6 @@ import { HookedBrowserRouter } from "./utils/routerContext";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-
-console.log('REACT_APP_GRAPHQL_URI ==>', process.env.REACT_APP_GRAPHQL_URI); // TODO: remove this
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_URI,
   headers: {

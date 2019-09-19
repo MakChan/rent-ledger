@@ -1,34 +1,21 @@
 import React, { useEffect } from "react";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
-import Button, { ButtonGroup } from "@atlaskit/button";
+import { ButtonGroup } from "@atlaskit/button";
 import TextField from "@atlaskit/textfield";
 import Form, {
   Field,
   FormFooter,
-  HelperMessage,
   ErrorMessage,
-  ValidMessage
 } from "@atlaskit/form";
+
+import ThemedButton from "../components/ThemedButton"
+import LinkButton from "../components/LinkButton"
 
 import { useAuthContext } from "../utils/authContext";
 import { useRouter } from "../utils/routerContext";
+import { LOG_IN } from "../utils/mutations";
 
-const LOG_IN = gql`
-  mutation LogIn($username: String!, $password: String!) {
-    logIn(username: $username, password: $password) {
-      token
-      user {
-        _id
-        username
-        landlord {
-          _id
-          name
-        }
-      }
-    }
-  }
-`;
 
 const SignIn = () => {
   const { setUser, userState } = useAuthContext();
@@ -71,15 +58,15 @@ const SignIn = () => {
 
           <FormFooter>
             <ButtonGroup>
-              <Button
-                onClick={() => history.push("/register")}
+              <LinkButton
+                href="/register"
                 appearance="subtle"
               >
                 Register
-              </Button>
-              <Button type="submit" appearance="primary" isLoading={submitting}>
+              </LinkButton>
+              <ThemedButton type="submit" appearance="primary" isLoading={submitting}>
                 Login
-              </Button>
+              </ThemedButton>
             </ButtonGroup>
           </FormFooter>
         </form>

@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start:client": "react-scripts start",
-    "start:server": "netlify-lambda serve server --config ./webpack.functions.js",
+    "start:server": "npx --node-arg=--inspect netlify-lambda serve server --config ./webpack.functions.js",
     "start": "concurrently -n client,server \"yarn start:client\" \"yarn start:server\"",
     "build": "run-s build:**",
     "build:client": "react-scripts build",

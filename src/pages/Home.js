@@ -1,11 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "@atlaskit/button";
 
 import { useAuthContext } from "../utils/authContext";
-import { useRouter } from "../utils/routerContext";
 
 import Rooms from "../components/Rooms";
+import LinkButton from "../components/LinkButton";
 
 const Box = styled.div`
   display: flex;
@@ -17,34 +16,24 @@ const VerticalBox = styled.div`
   flex-wrap: wrap;
   flex-direction: column;
   padding: 1rem;
-  border-left: 1px dotted;
 `;
 
 function Home() {
   const { userState } = useAuthContext();
-  const { history } = useRouter();
 
   return (
     <Box>
       <Rooms userState={userState} />
       <VerticalBox>
-        <Button
-          type="submit"
-          appearance="primary"
-          onClick={() => history.push("payment/accept")}
-        >
+        <LinkButton appearance="primary" href="payment/accept">
           Accept Payment
-        </Button>
-        <Button
-          type="submit"
-          appearance="subtle"
-          onClick={() => history.push("tenants/add")}
-        >
+        </LinkButton>
+        <LinkButton appearance="subtle" href="tenants/add">
           Add Tenant
-        </Button>
-        <Button type="submit" appearance="subtle">
+        </LinkButton>
+        <LinkButton appearance="subtle" href="#">
           End Lease
-        </Button>
+        </LinkButton>
       </VerticalBox>
     </Box>
   );

@@ -1,12 +1,5 @@
 import React from "react";
-import Button from "@atlaskit/button";
-import Form, {
-  Field,
-  FormFooter,
-  HelperMessage,
-  ErrorMessage,
-  ValidMessage
-} from "@atlaskit/form";
+import Form, { Field, FormFooter } from "@atlaskit/form";
 import TextField from "@atlaskit/textfield";
 import Select from "@atlaskit/select";
 import { DatePicker } from "@atlaskit/datetime-picker";
@@ -14,22 +7,13 @@ import TextArea from "@atlaskit/textarea";
 import CheckCircleOutlineIcon from "@atlaskit/icon/glyph/check-circle-outline";
 
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
 
 import { useAuthContext } from "../utils/authContext";
 import { GET_ROOMS } from "../utils/queries";
+import { ADD_TENANT } from "../utils/mutations";
 
 import { Loader, Wrapper } from "../components/Loader";
-
-const ADD_TENANT = gql`
-  mutation addTenant($lease: LeaseInput!, $tenant: TenantInput!) {
-    createTenantWithLease(lease: $lease, tenant: $tenant) {
-      _id
-      rent
-      room
-    }
-  }
-`;
+import Button from "../components/ThemedButton";
 
 const AddTenant = () => {
   const { userState } = useAuthContext();
@@ -39,35 +23,12 @@ const AddTenant = () => {
   });
 
   const [addTenant, { data: tenantData }] = useMutation(ADD_TENANT, {
-    onCompleted: data => {
-      console.log("data", data);
-      // Redirect to the room page
-      // Update rooms cache
-      //   setUser(data.logIn);
-      //   history.push("/");
-    },
-    update(
-      cache,
+    refetchQueries: [
       {
-        data: { addTenant }
-      }
-    ) {
-      let { rooms } = cache.readQuery({ query: GET_ROOMS });
-      console.log("rooms ==>", rooms); // TODO: remove this
-      console.log("addTenant ==>", addTenant); // TODO: remove this
-
-      rooms = rooms.map(room => {
-        if (addTenant.room == room._id) {
-          let updatedRoom = { ...room, currentLease: addTenant };
-          return updatedRoom;
-        }
-        return room;
-      });
-      cache.writeQuery({
         query: GET_ROOMS,
-        data: { rooms }
-      });
-    }
+        variables: { landlordId: userState.user.landlord._id }
+      }
+    ]
   });
 
   if (loading) return <Loader size="large" />;

@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "@atlaskit/button";
 import { FormFooter } from "@atlaskit/form";
 import { Form, Field } from "react-final-form";
 
@@ -15,13 +14,14 @@ import styled from "styled-components";
 import createDecorator from "final-form-calculate";
 
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
 
-import { useAuthContext } from "../utils/authContext";
+// import { useAuthContext } from "../utils/authContext";
 import { GET_CURRENT_LEASES } from "../utils/queries";
 import { PER_UNIT_CHARGE } from "../utils/constants";
+import { ADD_PAYMENT } from "../utils/mutations";
 
 import { Loader, Wrapper } from "../components/Loader";
+import Button from "../components/ThemedButton";
 
 const StyledDiv = styled.div`
   margin: 1.25rem 0;
@@ -50,14 +50,6 @@ const Row = styled.div`
 
   @media (max-width: 576px) {
     flex-direction: column;
-  }
-`;
-
-const ADD_PAYMENT = gql`
-  mutation createPayment($payment: PaymentInput!, $leaseId: String!) {
-    createPayment(payment: $payment, leaseId: $leaseId) {
-      _id
-    }
   }
 `;
 
@@ -116,18 +108,10 @@ const calculator = createDecorator(
 );
 
 const AddTenant = () => {
-  //   const { userState } = useAuthContext();
-
   const { data, loading } = useQuery(GET_CURRENT_LEASES);
 
   const [addPayment, { data: paymentData }] = useMutation(ADD_PAYMENT, {
-    onCompleted: data => {
-      console.log("data", data);
-      // Redirect to the room page
-      // Update cache
-      //   setUser(data.logIn);
-      //   history.push("/");
-    }
+    refetchQueries: [{ query: GET_CURRENT_LEASES }]
   });
 
   if (loading) return <Loader size="large" />;

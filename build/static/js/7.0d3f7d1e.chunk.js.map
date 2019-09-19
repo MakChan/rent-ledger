@@ -1,1 +1,0 @@
-{"version":3,"sources":["pages/NoMatch.js"],"names":["__webpack_require__","r","__webpack_exports__","NoMatch"],"mappings":"0FAAAA,EAAAC,EAAAC,GAAAF,EAAA,GAMeG,UAJf,WACE,MAAO","file":"static/js/7.0d3f7d1e.chunk.js","sourcesContent":["import React from \"react\";\r\n\r\nfunction NoMatch() {\r\n  return \"NoMatch\";\r\n}\r\n\r\nexport default NoMatch;\r\n"],"sourceRoot":""}
