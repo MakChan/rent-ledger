@@ -12,7 +12,7 @@
     "prebuild" : "cd client && yarn install",
     "build:client": "cd client && yarn build",
     "build:lambda": "netlify-lambda build server/src",
-    "build" : "concurrently -n \"yarn build:lambda\" \"yarn build:client\""
+    "build" : "concurrently -n lambda,client \"yarn build:lambda\" \"yarn build:client\""
   },
   "dependencies": {
     "concurrently": "^4.1.2",
