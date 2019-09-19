@@ -13,6 +13,8 @@ export default {
       // return room;
     },
     rooms: async (parent, { _id }, { models }) => {
+      console.log('_id ==>', _id); // TODO: remove this
+      console.log('models ==>', models); // TODO: remove this
       const roooms = await models.Room.find({ landlordId: _id })
         .populate("currentLease")
         .populate({

@@ -7,10 +7,17 @@ import Lease from "./lease";
 import Tenant from "./tenant";
 import Payment from "./payment";
 
-const connectDb = () => {
+const connectDb = conn => {
+  if (conn) {
+    console.log("conn promise ==>", conn); // TODO: remove this
+    return Promise.resolve(conn);
+  }
+
   return mongoose.connect(process.env.DATABASE_URL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    bufferCommands: false,
+    bufferMaxEntries: 0
   });
 };
 

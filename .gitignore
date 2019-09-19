@@ -60,3 +60,6 @@ server/.prod.env
 
 # next.js build output
 .next
+
+
+built-lambda

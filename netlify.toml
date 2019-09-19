@@ -3,6 +3,8 @@
     publish = "client/build/"
     command = "yarn build"
 
+    functions = "built-lambda"
+
 [[redirects]]
     from = "/*"
     to = "/index.html"
