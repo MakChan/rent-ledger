@@ -14,13 +14,11 @@ export default {
       return await models.User.findOne({ _id: _id }).populate("landlord");
     },
     me: async (parent, args, { models, me }) => {
-      console.log('me ==>', me); // TODO: remove this
       return await models.User.findOne({ _id: me._id }).populate("landlord");
     }
   },
   Mutation: {
     createUser: async (parent, { name, username, password }, { models }) => {
-      // console.log("name, username, password ==>", name, username, password); // TODO: remove this
       const landlord = await models.Landlord.create({ name });
       const user = await models.User.create({
         username: username,
@@ -29,7 +27,6 @@ export default {
       });
 
       user.landlord = landlord;
-      console.log('user ==>', user); // TODO: remove this
       return { token: createToken(user, "30d"), user };
     },
     logIn: async (parent, { username, password }, { models }) => {
@@ -43,7 +40,6 @@ export default {
       if (!isValid) {
         throw new AuthenticationError("Invalid password.");
       }
-      console.log('user ==>', user); // TODO: remove this
       return { token: createToken(user, "30d"), user };
     }
   }

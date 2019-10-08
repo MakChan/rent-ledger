@@ -28,8 +28,6 @@ export const UserProvider = props => {
   const [getMe, { data }] = useLazyQuery(GET_ME, {
     variables: { asfas: true },
     onCompleted({ me }) {
-      // console.log("onCompleted"); // TODO: remove this
-      // console.log("data", me);
       setUserState({ user: me });
     }
   });
@@ -37,7 +35,6 @@ export const UserProvider = props => {
   useEffect(() => {
     const token = localStorage.getItem("x-token");
     if (token && token !== "undefined") {
-      // getMe({ variables: { asfas: true } });
       setUserState({
         loaded: true,
         user: JSON.parse(localStorage.getItem("user"))
@@ -50,7 +47,6 @@ export const UserProvider = props => {
   }, []);
 
   const setUser = data => {
-    // console.log("data ==>", data); // TODO: remove this
     localStorage.setItem("x-token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
     setUserState({ user: data.user, loaded: true });

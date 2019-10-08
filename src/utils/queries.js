@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
 export const GET_ROOMS = gql`
-  query getRooms($landlordId: String!) {
-    rooms(_id: $landlordId) {
+  query {
+    rooms {
       _id
       roomNo
       currentLease {

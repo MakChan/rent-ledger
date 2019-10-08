@@ -8,6 +8,6 @@ const landlordSchema = new mongoose.Schema({
   rooms: [{ type: mongoose.Schema.Types.ObjectId, ref: "Room" }]
 });
 
-const Landlord = mongoose.model("Landlord", landlordSchema);
+const Landlord = mongoose.models.Landlord || mongoose.model("Landlord", landlordSchema);
 
 export default Landlord;

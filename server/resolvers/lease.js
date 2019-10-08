@@ -1,3 +1,5 @@
+import { ApolloError  } from "apollo-server";
+
 export default {
   Query: {
     lease: async (parent, { _id }, { models }) => {
@@ -9,8 +11,6 @@ export default {
       return room.leases;
     },
     currentLeases: async (parent, {}, { models, me }) => {
-      // console.log("me ==>", me); // TODO: remove this
-      console.log("currentLeases", me); // TODO: remove this
       const leases = await models.Lease.aggregate([
         { $match: { landlord: me.landlord, current: true } },
         {
@@ -81,6 +81,26 @@ export default {
       return await models.Lease.findOneAndUpdate({ _id: _id }, lease, {
         new: true
       });
+    },
+    endLease: async (parent, { _id }, { models }) => {
+      // 1. Update the lease -> Set current as false
+      // 2. Update the room -> Set currentLease as null
+      try {
+        const lease = await models.Lease.findOneAndUpdate(
+          { _id: _id },
+          { $set: { current: false } },
+          {
+            new: true
+          }
+        );
+        await models.Room.findOneAndUpdate(
+          { _id: lease.room },
+          { $set: { currentLease: null } }
+        );
+        return lease;
+      } catch (e) {
+        return new ApolloError(e, 500);
+      }
     }
   }
 };

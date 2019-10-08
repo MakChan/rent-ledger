@@ -4,7 +4,7 @@ import Spinner from "@atlaskit/spinner";
 
 const Wrapper = styled.div`
   text-align: center;
-  margin-top: 2rem;
+  padding-top: 2rem;
 `;
 
 const Loader = props => (

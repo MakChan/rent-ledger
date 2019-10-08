@@ -27,6 +27,6 @@ const leaseSchema = new mongoose.Schema({
   payments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Payment" }]
 });
 
-const Lease = mongoose.model("Lease", leaseSchema);
+const Lease =  mongoose.models.Lease || mongoose.model("Lease", leaseSchema);
 
 export default Lease;

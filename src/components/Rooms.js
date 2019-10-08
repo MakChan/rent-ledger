@@ -19,10 +19,8 @@ const Room = styled.div`
   }
 `;
 
-function Rooms({ userState }) {
-  const { data, loading } = useQuery(GET_ROOMS, {
-    variables: { landlordId: userState.user.landlord._id }
-  });
+function Rooms() {
+  const { data, loading } = useQuery(GET_ROOMS);
 
   return (
     <div style={{ padding: "1rem" }}>

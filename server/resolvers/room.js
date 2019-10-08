@@ -12,10 +12,8 @@ export default {
       // room.lease = currentLease;
       // return room;
     },
-    rooms: async (parent, { _id }, { models }) => {
-      console.log('_id ==>', _id); // TODO: remove this
-      console.log('models ==>', models); // TODO: remove this
-      const roooms = await models.Room.find({ landlordId: _id })
+    rooms: async (parent, {}, { models, me }) => {
+      const roooms = await models.Room.find({ landlordId: me.landlord })
         .populate("currentLease")
         .populate({
           path: "currentLease",
@@ -23,11 +21,9 @@ export default {
             path: "tenant"
           }
         });
-      console.log("roooms ==>", roooms); // TODO: remove this
       return roooms;
     }
   },
-
   Mutation: {
     createRoom: combineResolvers(
       isAuthenticated,
@@ -36,6 +32,15 @@ export default {
           roomNo,
           landlordId: me._id
         });
+      }
+    ),
+    createMultipleRooms: combineResolvers(
+      isAuthenticated,
+      async (parent, { rooms }, { models, me }) => {
+        rooms = rooms
+          .filter(room => room.roomNo)
+          .map(room => ({ roomNo: room.roomNo, landlordId: me._id }));
+        return await models.Room.insertMany(rooms);
       }
     )
   }

@@ -1,13 +1,18 @@
 import { gql } from "apollo-server-lambda";
 
 export default gql`
+  input CreateRoomInput {
+    roomNo: String!
+  }
+
   extend type Query {
     room(_id: String!): Room
-    rooms(_id: String!): [RoomPayload!]
+    rooms: [RoomPayload!]
   }
 
   extend type Mutation {
     createRoom(roomNo: String!): Room!
+    createMultipleRooms(rooms: [CreateRoomInput]): [Room]
   }
 
   type RoomPayload {

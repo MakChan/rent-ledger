@@ -7,14 +7,16 @@ import { useAuthContext } from "./utils/authContext";
 
 import Header from "./components/Header";
 import AuthRoute from "./components/AuthRoute";
-import { Loader } from "./components/Loader";
+import { Loader, Wrapper } from "./components/Loader";
 
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 
 const AddTenant = lazy(() => import("./pages/AddTenant"));
+const AddRooms = lazy(() => import("./pages/AddRooms"));
 const AcceptPayment = lazy(() => import("./pages/AcceptPayment"));
+const EndLease = lazy(() => import("./pages/EndLease"));
 const NoMatch = lazy(() => import("./pages/NoMatch"));
 
 const Container = styled.div`
@@ -28,7 +30,12 @@ const Container = styled.div`
 function App() {
   const { userState } = useAuthContext();
 
-  if (!userState.loaded) return <Loader size="medium" />;
+  if (!userState.loaded)
+    return (
+      <Wrapper>
+        <Loader size="medium" />
+      </Wrapper>
+    );
 
   return (
     <Switch>
@@ -38,7 +45,9 @@ function App() {
       <Container>
         <Suspense fallback={<Loader size="large" />}>
           <GuardedRoute path="/" exact component={Home} />
+          <GuardedRoute path="/rooms/add" exact component={AddRooms} />
           <GuardedRoute path="/tenants/add" exact component={AddTenant} />
+          <GuardedRoute path="/lease/end" exact component={EndLease} />
           <GuardedRoute
             path="/payment/accept"
             exact

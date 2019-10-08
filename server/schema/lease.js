@@ -26,6 +26,7 @@ export default gql`
   extend type Mutation {
     createTenantWithLease(lease: LeaseInput!, tenant: TenantInput!): Lease
     updateLease(_id: String!, lease: LeaseInput): Lease
+    endLease(_id: String!): Lease
   }
 
   type LeasePayload {

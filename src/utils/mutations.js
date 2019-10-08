@@ -50,3 +50,20 @@ export const ADD_TENANT = gql`
     }
   }
 `;
+
+export const END_LEASE = gql`
+  mutation endLease($leaseId: String!) {
+    endLease(_id: $leaseId) {
+      _id
+    }
+  }
+`;
+
+export const ADD_ROOMS = gql`
+  mutation createMultipleRooms($rooms: [CreateRoomInput]) {
+    createMultipleRooms(rooms: $rooms) {
+      _id
+      roomNo
+    }
+  }
+`;

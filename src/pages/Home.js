@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import AddCircleIcon from "@atlaskit/icon/glyph/add-circle";
+import CrossCircleIcon from "@atlaskit/icon/glyph/cross-circle";
+import InviteTeamIcon from "@atlaskit/icon/glyph/invite-team";
 
 import { useAuthContext } from "../utils/authContext";
 
@@ -25,13 +28,34 @@ function Home() {
     <Box>
       <Rooms userState={userState} />
       <VerticalBox>
-        <LinkButton appearance="primary" href="payment/accept">
+        <LinkButton
+          appearance="subtle"
+          href="rooms/add"
+          iconBefore={<AddCircleIcon primaryColor="#000" />}
+        >
+          Add Rooms
+        </LinkButton>
+        <LinkButton
+          appearance="primary"
+          href="payment/accept"
+          iconBefore={
+            <AddCircleIcon primaryColor="#fff" secondaryColor="#673ab7" />
+          }
+        >
           Accept Payment
         </LinkButton>
-        <LinkButton appearance="subtle" href="tenants/add">
+        <LinkButton
+          appearance="subtle"
+          href="tenants/add"
+          iconBefore={<InviteTeamIcon primaryColor="#000" />}
+        >
           Add Tenant
         </LinkButton>
-        <LinkButton appearance="subtle" href="#">
+        <LinkButton
+          appearance="subtle"
+          href="lease/end"
+          iconBefore={<CrossCircleIcon primaryColor="#000" />}
+        >
           End Lease
         </LinkButton>
       </VerticalBox>

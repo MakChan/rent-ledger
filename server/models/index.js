@@ -9,7 +9,6 @@ import Payment from "./payment";
 
 const connectDb = conn => {
   if (conn) {
-    console.log("conn promise ==>", conn); // TODO: remove this
     return Promise.resolve(conn);
   }
 
