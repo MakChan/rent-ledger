@@ -1,9 +1,14 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+
 import styled from "styled-components";
 import HomeIcon from "@atlaskit/icon/glyph/home";
+import MenuExpandIcon from "@atlaskit/icon/glyph/menu-expand";
 
-import { useRouter } from "../utils/routerContext";
+import { useHeaderContext } from "../utils/headerContext";
 import Button from "../components/ThemedButton";
+
+import { isMobile } from "../utils";
 
 const Nav = styled.nav`
   display: flex;
@@ -17,26 +22,36 @@ const Box = styled.div`
   align-items: center;
 `;
 
-const Navbar = props => {
-  const { history } = useRouter();
+const Header = props => {
+  const history = useHistory();
+  const { showSidebar, toggleSidebar } = useHeaderContext();
   return (
-    <div>
+    <header>
       <Nav>
-        <Button
-          onClick={() => history.push("/")}
-          iconBefore={<HomeIcon size="medium" />}
-        />
+        <div>
+          <Button
+            onClick={() => toggleSidebar(!showSidebar)}
+            iconBefore={<MenuExpandIcon size="medium" />}
+          />
+
+          <Button
+            onClick={() => history.push("/")}
+            iconBefore={<HomeIcon size="medium" />}
+          />
+        </div>
         <Box>
           <span>
             Hi, <b>{props.user && props.user.landlord.name}</b>
           </span>
-          <Button onClick={props.logOut} appearance="link">
-            Logout
-          </Button>
+          {!isMobile && (
+            <Button onClick={props.logOut} appearance="link">
+              Logout
+            </Button>
+          )}
         </Box>
       </Nav>
-    </div>
+    </header>
   );
 };
 
-export default Navbar;
+export default Header;

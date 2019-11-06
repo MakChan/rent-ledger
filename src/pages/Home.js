@@ -1,65 +1,35 @@
 import React from "react";
 import styled from "styled-components";
-import AddCircleIcon from "@atlaskit/icon/glyph/add-circle";
-import CrossCircleIcon from "@atlaskit/icon/glyph/cross-circle";
-import InviteTeamIcon from "@atlaskit/icon/glyph/invite-team";
 
-import { useAuthContext } from "../utils/authContext";
+import { useHeaderContext } from "../utils/headerContext";
+import { isMobile } from "../utils";
 
-import Rooms from "../components/Rooms";
-import LinkButton from "../components/LinkButton";
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
 
-const Box = styled.div`
-  display: flex;
-  justify-content: space-between;
+const Container = styled.div`
+  transition: margin 0.2s ease-in-out, transform 0.2s ease-in-out;
+  margin-left: ${props => (isMobile ? "0" : props.showSidebar ? "200px" : "0")};
+
+  transform: ${props =>
+    isMobile
+      ? props.showSidebar
+        ? "translateX(224px)"
+        : "translateX(0)"
+      : ""};
 `;
 
-const VerticalBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  padding: 1rem;
-`;
-
-function Home() {
-  const { userState } = useAuthContext();
+function Home({ children, userState, logOut }) {
+  const { showSidebar } = useHeaderContext();
 
   return (
-    <Box>
-      <Rooms userState={userState} />
-      <VerticalBox>
-        <LinkButton
-          appearance="subtle"
-          href="rooms/add"
-          iconBefore={<AddCircleIcon primaryColor="#000" />}
-        >
-          Add Rooms
-        </LinkButton>
-        <LinkButton
-          appearance="primary"
-          href="payment/accept"
-          iconBefore={
-            <AddCircleIcon primaryColor="#fff" secondaryColor="#673ab7" />
-          }
-        >
-          Accept Payment
-        </LinkButton>
-        <LinkButton
-          appearance="subtle"
-          href="tenants/add"
-          iconBefore={<InviteTeamIcon primaryColor="#000" />}
-        >
-          Add Tenant
-        </LinkButton>
-        <LinkButton
-          appearance="subtle"
-          href="lease/end"
-          iconBefore={<CrossCircleIcon primaryColor="#000" />}
-        >
-          End Lease
-        </LinkButton>
-      </VerticalBox>
-    </Box>
+    <>
+      <Header user={userState.user} logOut={logOut} />
+      <main>
+        <Sidebar showSidebar={showSidebar} logOut={logOut} />
+        <Container showSidebar={showSidebar}>{children}</Container>
+      </main>
+    </>
   );
 }
 

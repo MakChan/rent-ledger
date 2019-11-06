@@ -9,3 +9,11 @@ body {
   font-family: "Work Sans", sans-serif;
   background-color: #f5f6f8;
 }
+
+main {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(80vh - 60px);
+}

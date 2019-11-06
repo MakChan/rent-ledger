@@ -30,7 +30,7 @@ export default {
       async (parent, { roomNo }, { models, me }) => {
         return await models.Room.create({
           roomNo,
-          landlordId: me._id
+          landlordId: me.landlord
         });
       }
     ),
@@ -39,7 +39,7 @@ export default {
       async (parent, { rooms }, { models, me }) => {
         rooms = rooms
           .filter(room => room.roomNo)
-          .map(room => ({ roomNo: room.roomNo, landlordId: me._id }));
+          .map(room => ({ roomNo: room.roomNo, landlordId: me.landlord }));
         return await models.Room.insertMany(rooms);
       }
     )

@@ -2,12 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FormFooter } from "@atlaskit/form";
 import { Form, Field } from "react-final-form";
-import arrayMutators from 'final-form-arrays'
-import { FieldArray } from 'react-final-form-arrays'
+import arrayMutators from "final-form-arrays";
+import { FieldArray } from "react-final-form-arrays";
 
 import { useMutation } from "@apollo/react-hooks";
 import { Field as AtlasField } from "@atlaskit/form";
-import CrossIcon from '@atlaskit/icon/glyph/cross';
+import CrossIcon from "@atlaskit/icon/glyph/cross";
 import TextField from "@atlaskit/textfield";
 
 import { GET_ROOMS } from "../utils/queries";
@@ -21,20 +21,19 @@ const AddRooms = props => {
   const [addRooms, { data: addedRooms }] = useMutation(ADD_ROOMS, {
     refetchQueries: [{ query: GET_ROOMS }]
   });
-      
+
   const handleSubmit = data => {
     console.log("data =>", data);
     addRooms({ variables: { rooms: data.rooms } });
   };
 
   if (addedRooms)
-  return (
-    <Wrapper>
-      <h3>Rooms successfully ended!</h3>
-      <Link to="/">Go Home</Link>
-    </Wrapper>
-  );
-
+    return (
+      <Wrapper>
+        <h3>Rooms successfully added!</h3>
+        <Link to="/">Go Home</Link>
+      </Wrapper>
+    );
 
   return (
     <div style={{ padding: "1rem 2rem" }}>

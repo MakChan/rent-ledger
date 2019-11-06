@@ -1,6 +1,6 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
 import { ButtonGroup } from "@atlaskit/button";
 import TextField from "@atlaskit/textfield";
 import Form, {
@@ -15,12 +15,11 @@ import ThemedButton from "../components/ThemedButton";
 import LinkButton from "../components/LinkButton";
 
 import { useAuthContext } from "../utils/authContext";
-import { useRouter } from "../utils/routerContext";
 import { CREATE_USER } from "../utils/mutations";
 
 const SignUp = () => {
   const { setUser } = useAuthContext();
-  const { history } = useRouter();
+  const history = useHistory();
 
   const [createUser, {}] = useMutation(CREATE_USER, {
     onCompleted: data => {

@@ -4,12 +4,13 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import styled from "styled-components";
 
 import { useAuthContext } from "./utils/authContext";
+import { HeaderProvider, useHeaderContext } from "./utils/headerContext";
 
-import Header from "./components/Header";
 import AuthRoute from "./components/AuthRoute";
 import { Loader, Wrapper } from "./components/Loader";
 
 import Home from "./pages/Home";
+import Rooms from "./pages/Rooms";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 
@@ -20,11 +21,15 @@ const EndLease = lazy(() => import("./pages/EndLease"));
 const NoMatch = lazy(() => import("./pages/NoMatch"));
 
 const Container = styled.div`
-  max-width: 700px;
+  max-width: 750px;
   min-height: 80vh;
-  margin: 5% auto 0;
+  margin: auto;
   box-shadow: 0 0px 20px #e7e7e7;
   background-color: #fbfbfb;
+
+  @media (min-width: 768px) {
+    margin: 5% auto 0;
+  }
 `;
 
 function App() {
@@ -44,7 +49,7 @@ function App() {
 
       <Container>
         <Suspense fallback={<Loader size="large" />}>
-          <GuardedRoute path="/" exact component={Home} />
+          <GuardedRoute path="/" exact component={Rooms} />
           <GuardedRoute path="/rooms/add" exact component={AddRooms} />
           <GuardedRoute path="/tenants/add" exact component={AddTenant} />
           <GuardedRoute path="/lease/end" exact component={EndLease} />
@@ -71,12 +76,11 @@ const GuardedRoute = ({ component: Component, ...rest }) => {
         !userState.user ? (
           <Redirect to={{ pathname: "/login" }} />
         ) : (
-          <>
-            <Header user={userState.user} logOut={logOut} />
-            <main>
+          <HeaderProvider>
+            <Home userState={userState} logOut={logOut}>
               <Component {...props} />
-            </main>
-          </>
+            </Home>
+          </HeaderProvider>
         )
       }
     />

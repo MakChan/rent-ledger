@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 import { ButtonGroup } from "@atlaskit/button";
@@ -13,13 +14,12 @@ import ThemedButton from "../components/ThemedButton"
 import LinkButton from "../components/LinkButton"
 
 import { useAuthContext } from "../utils/authContext";
-import { useRouter } from "../utils/routerContext";
 import { LOG_IN } from "../utils/mutations";
 
 
 const SignIn = () => {
   const { setUser, userState } = useAuthContext();
-  const { history } = useRouter();
+  const history = useHistory();
 
   const [logIn, {}] = useMutation(LOG_IN, {
     onCompleted: data => {
