@@ -17,6 +17,7 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 
 // import { useAuthContext } from "../utils/authContext";
 import { GET_CURRENT_LEASES } from "../utils/queries";
+import { getUnitRate, getPreviousReading } from "../utils";
 import { PER_UNIT_CHARGE } from "../utils/constants";
 import { ADD_PAYMENT } from "../utils/mutations";
 
@@ -53,46 +54,61 @@ const Row = styled.div`
   }
 `;
 
-const calculateElectricity = (reading, lease) => {
-  let charges = 0;
-  // if (!lease.lastPayment && !lease.lastPayment.reading)
-  if (!lease.lastPayment)
-    charges = (reading - lease.initialReading) * PER_UNIT_CHARGE;
-  else charges = (reading - lease.lastPayment.reading) * PER_UNIT_CHARGE;
+const calculateElectricity = (reading, lease, unitRate) => {
+  const lastReading = getPreviousReading(lease);
+  const charges = (reading - lastReading) * unitRate;
   return charges > 0 ? charges : 0;
+};
+
+const calculateTotalRent = (lease, reading, unitRate) => {
+  const charges = calculateElectricity(reading, lease.value, unitRate);
+
+  const balance =
+    lease.value.lastPayment &&
+    (lease.value.lastPayment.balance ? lease.value.lastPayment.balance : 0);
+
+  const extraCharges = lease.value.extraCharges ? lease.value.extraCharges : 0;
+  return {
+    charges: charges,
+    totalRent: lease.value.rent + charges + balance + extraCharges
+  };
 };
 
 const calculator = createDecorator(
   {
     field: ["lease", "payment.reading"],
-    updates: (reading, name, values, prev) => {
+    updates: (reading, name, values) => {
       if (!values.lease) return {};
 
-      let charges = 0;
-      let totalRent = 0;
+      let { charges, totalRent } = calculateTotalRent(
+        values.lease,
+        name === "payment.reading" ? reading : values.payment.reading,
+        values.unitRate
+      );
 
-      if (name === "lease") {
-        totalRent = reading.value.rent;
-        if (values.payment.reading)
-          charges = calculateElectricity(
-            values.payment.reading,
-            values.lease.value
-          );
-      } else charges = calculateElectricity(reading, values.lease.value);
-
-      const balance =
-        values.lease.value.lastPayment &&
-        (values.lease.value.lastPayment.balance
-          ? values.lease.value.lastPayment.balance
-          : 0);
-
-      const extraCharges = values.lease.value.extraCharges
-        ? values.lease.value.extraCharges
-        : 0;
-      totalRent = values.lease.value.rent + charges + balance + extraCharges;
       return {
         "payment.electricityCharges": charges,
         totalRent: totalRent
+      };
+    }
+  },
+  {
+    field: ["payment.datePaid"],
+    updates: (datePaid, name, values) => {
+      const unitRate = getUnitRate(datePaid);
+
+      if (!values.lease) return { unitRate: unitRate };
+
+      let { charges, totalRent } = calculateTotalRent(
+        values.lease,
+        values.payment.reading,
+        unitRate
+      );
+
+      return {
+        "payment.electricityCharges": charges,
+        totalRent: totalRent,
+        unitRate: unitRate
       };
     }
   },
@@ -107,14 +123,17 @@ const calculator = createDecorator(
   }
 );
 
-const AddTenant = () => {
+const AcceptPayment = () => {
   const { data, loading } = useQuery(GET_CURRENT_LEASES);
 
-  const [addPayment, { data: paymentData }] = useMutation(ADD_PAYMENT, {
+  const [
+    addPayment,
+    { loading: mutationLoading, data: paymentData }
+  ] = useMutation(ADD_PAYMENT, {
     refetchQueries: [{ query: GET_CURRENT_LEASES }]
   });
 
-  if (loading) return <Loader size="large" />;
+  if (loading || mutationLoading) return <Loader size="large" />;
 
   const options = data.currentLeases.map(lease => ({
     label: `${lease.room.roomNo} - ${lease.tenant.name}`,
@@ -125,6 +144,7 @@ const AddTenant = () => {
 
   const handleSubmit = data => {
     const leaseId = data.lease.value._id;
+    // TODO:  Move this logic to backend
     let payment = { ...data.payment };
     payment.datePaid = new Date(data.payment.datePaid);
     payment.reading = payment.reading
@@ -136,7 +156,11 @@ const AddTenant = () => {
       payment.paidElectricityCharges = payment.balance;
       payment.balance = 0;
     } else {
-      payment.paidElectricityCharges = payment.electricityCharges;
+      if (payment.balance > 0)
+        payment.paidElectricityCharges = payment.electricityCharges;
+      else
+        payment.paidElectricityCharges =
+          payment.electricityCharges + payment.balance;
     }
     addPayment({ variables: { leaseId, payment } });
   };
@@ -156,7 +180,8 @@ const AddTenant = () => {
         onSubmit={handleSubmit}
         decorators={[calculator]}
         initialValues={{
-          payment: { datePaid: date }
+          payment: { datePaid: date },
+          unitRate: 0
         }}
       >
         {({ handleSubmit, submitting, values, pristine }) => (
@@ -188,12 +213,7 @@ const AddTenant = () => {
               <>
                 <StyledDiv>
                   Previous Reading :{" "}
-                  <span>
-                    {values.lease.value.lastPayment &&
-                    values.lease.value.lastPayment.reading
-                      ? values.lease.value.lastPayment.reading
-                      : values.lease.value.initialReading}
-                  </span>
+                  <span>{getPreviousReading(values.lease.value)}</span>
                 </StyledDiv>
                 <Field
                   name="payment.reading"
@@ -205,12 +225,9 @@ const AddTenant = () => {
                       {() => (
                         <TextField
                           autoComplete="off"
-                          placeholder={
-                            values.lease.value.lastPayment &&
-                            values.lease.value.lastPayment.reading
-                              ? values.lease.value.lastPayment.reading
-                              : values.lease.value.initialReading
-                          }
+                          placeholder={`Should be more than ${getPreviousReading(
+                            values.lease.value
+                          )}`}
                           {...input}
                           type="number"
                         />
@@ -218,6 +235,10 @@ const AddTenant = () => {
                     </AtlasField>
                   )}
                 </Field>
+                <StyledDiv>
+                  Unit Rate : <span>{values.unitRate}</span>
+                </StyledDiv>
+
                 <StyledDiv>
                   Calculated Electricity Charges :{" "}
                   <span>{values.payment.electricityCharges}</span>
@@ -319,4 +340,4 @@ const AddTenant = () => {
   );
 };
 
-export default AddTenant;
+export default AcceptPayment;

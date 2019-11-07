@@ -1,9 +1,13 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/react-hooks";
 import styled from "styled-components";
+import OpenIcon from "@atlaskit/icon/glyph/open";
+
 import { GET_ROOMS } from "../utils/queries";
 
 import { Loader } from "../components/Loader";
+import {COLOR_PRIMARY} from "../utils/constants"
 
 const Room = styled.div`
   display: flex;
@@ -28,13 +32,25 @@ function Rooms() {
       {loading ? (
         <Loader size="medium" />
       ) : (
+        data &&
         data.rooms.map(room => (
           <Room key={room.roomNo} vacant={!room.currentLease}>
-            {room.currentLease ? (
-              <h4>{room.currentLease.tenant.name}</h4>
-            ) : (
-              "Vacant"
-            )}
+            <div style={{ display: "flex" }}>
+              {room.currentLease ? (
+                <h4 style={{ lineHeight: 'inherit' }}>
+                  {room.currentLease.tenant.name}
+                </h4>
+              ) : (
+                "Vacant"
+              )}
+
+              {room.currentLease && (
+                <Link to={`/lease/${room.roomNo}/${room.currentLease._id}`}>
+                  <OpenIcon primaryColor="#562aa5" />
+                </Link>
+              )}
+            </div>
+
             <h3>{room.roomNo}</h3>
           </Room>
         ))

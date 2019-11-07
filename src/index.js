@@ -12,8 +12,16 @@ import * as serviceWorker from "./serviceWorker";
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_URI,
-  headers: {
-    "x-token": localStorage.getItem("x-token")
+  // headers: {
+  //   "x-token": localStorage.getItem("x-token")
+  // },
+  request: operation => {
+    const token = localStorage.getItem("x-token");
+    operation.setContext({
+      headers: {
+        "x-token": token ? token : ""
+      }
+    });
   }
 });
 

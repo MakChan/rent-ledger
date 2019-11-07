@@ -29,13 +29,6 @@ function Sidebar({ showSidebar, logOut }) {
     <Container show={showSidebar}>
       <LinkButton
         appearance="subtle"
-        href="/rooms/add"
-        iconBefore={<AddCircleIcon primaryColor="#000" />}
-      >
-        Add Rooms
-      </LinkButton>
-      <LinkButton
-        appearance="subtle"
         href="/payment/accept"
         iconBefore={<AddCircleIcon primaryColor="#000" />}
       >
@@ -54,6 +47,13 @@ function Sidebar({ showSidebar, logOut }) {
         iconBefore={<CrossCircleIcon primaryColor="#000" />}
       >
         End Lease
+      </LinkButton>
+      <LinkButton
+        appearance="subtle"
+        href="/rooms/add"
+        iconBefore={<AddCircleIcon primaryColor="#000" />}
+      >
+        Add Rooms
       </LinkButton>
 
       {isMobile && (

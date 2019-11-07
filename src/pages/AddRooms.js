@@ -17,13 +17,12 @@ import { Wrapper } from "../components/Loader";
 
 const initialValue = [{ roomNo: "" }];
 
-const AddRooms = props => {
+const AddRooms = () => {
   const [addRooms, { data: addedRooms }] = useMutation(ADD_ROOMS, {
     refetchQueries: [{ query: GET_ROOMS }]
   });
 
   const handleSubmit = data => {
-    console.log("data =>", data);
     addRooms({ variables: { rooms: data.rooms } });
   };
 

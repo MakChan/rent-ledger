@@ -9,7 +9,7 @@ import CheckCircleOutlineIcon from "@atlaskit/icon/glyph/check-circle-outline";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { useAuthContext } from "../utils/authContext";
-import { GET_ROOMS } from "../utils/queries";
+import { GET_ROOMS, GET_CURRENT_LEASES } from "../utils/queries";
 import { ADD_TENANT } from "../utils/mutations";
 
 import { Loader, Wrapper } from "../components/Loader";
@@ -25,8 +25,10 @@ const AddTenant = () => {
   const [addTenant, { data: tenantData }] = useMutation(ADD_TENANT, {
     refetchQueries: [
       {
-        query: GET_ROOMS,
-        variables: { landlordId: userState.user.landlord._id }
+        query: GET_ROOMS
+      },
+      {
+        query: GET_CURRENT_LEASES
       }
     ]
   });

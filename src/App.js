@@ -16,6 +16,7 @@ import SignUp from "./pages/SignUp";
 
 const AddTenant = lazy(() => import("./pages/AddTenant"));
 const AddRooms = lazy(() => import("./pages/AddRooms"));
+const Lease = lazy(() => import("./pages/Lease"));
 const AcceptPayment = lazy(() => import("./pages/AcceptPayment"));
 const EndLease = lazy(() => import("./pages/EndLease"));
 const NoMatch = lazy(() => import("./pages/NoMatch"));
@@ -53,6 +54,11 @@ function App() {
           <GuardedRoute path="/rooms/add" exact component={AddRooms} />
           <GuardedRoute path="/tenants/add" exact component={AddTenant} />
           <GuardedRoute path="/lease/end" exact component={EndLease} />
+          <GuardedRoute
+            path="/lease/:roomNo/:leaseId"
+            exact
+            component={Lease}
+          />
           <GuardedRoute
             path="/payment/accept"
             exact

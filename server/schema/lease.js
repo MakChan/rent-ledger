@@ -19,6 +19,7 @@ export default gql`
 
   extend type Query {
     lease(_id: String!): Lease
+    leaseWithPayments(_id: String!) : LeaseWithPaymentsPayload
     leases(_id: String!): [Lease!]
     currentLeases: [LeasePayload!]
   }
@@ -41,6 +42,19 @@ export default gql`
     landlord: Landlord
     tenant: Tenant!
     lastPayment: Payment
+  }
+
+  type LeaseWithPaymentsPayload {
+    _id: String!
+    rent: Int
+    extraCharges: Int
+    initialReading: Int
+    current: Boolean!
+    date: Date!
+    remark: String
+    room: Room!
+    tenant: Tenant!
+    payments: [Payment]
   }
 
   type Lease {

@@ -17,6 +17,33 @@ export const GET_ROOMS = gql`
   }
 `;
 
+export const LEASE_WITH_PAYMENTS = gql`
+  query LeaseWithPayments($leaseId: String!) {
+    leaseWithPayments(_id: $leaseId) {
+      _id
+      rent
+      current
+      tenant {
+        name
+      }
+      room {
+        _id
+        roomNo
+      }
+      payments {
+        _id
+        reading
+        electricityCharges
+        paidElectricityCharges
+        totalPaid
+        balance
+        remark
+        datePaid
+      }
+    }
+  }
+`;
+
 export const GET_CURRENT_LEASES = gql`
   query {
     currentLeases {

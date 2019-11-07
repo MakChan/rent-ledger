@@ -1,4 +1,4 @@
-import { ApolloError  } from "apollo-server";
+import { ApolloError } from "apollo-server";
 
 export default {
   Query: {
@@ -9,6 +9,12 @@ export default {
       const room = await models.Room.findOne({ _id: _id });
       // Wrong
       return room.leases;
+    },
+    leaseWithPayments: async (parent, { _id }, { models }) => {
+      return await models.Lease.findOne({ _id: _id })
+        .populate("tenant")
+        .populate("room")
+        .populate("payments");
     },
     currentLeases: async (parent, {}, { models, me }) => {
       const leases = await models.Lease.aggregate([

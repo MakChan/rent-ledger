@@ -54,6 +54,7 @@ export const UserProvider = props => {
 
   const logOut = () => {
     localStorage.removeItem("x-token");
+    localStorage.removeItem("user");
     setUserState({ user: undefined, loaded: true });
   };
 
