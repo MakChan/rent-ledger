@@ -21,7 +21,10 @@ const SignUp = () => {
   const { setUser } = useAuthContext();
   const history = useHistory();
 
-  const [createUser, {}] = useMutation(CREATE_USER, {
+  const [
+    createUser,
+    { loading: requestLoading, error: requestError }
+  ] = useMutation(CREATE_USER, {
     onCompleted: data => {
       setUser(data.createUser);
       history.push("/");
@@ -30,7 +33,7 @@ const SignUp = () => {
 
   return (
     <Form onSubmit={data => createUser({ variables: data })}>
-      {({ formProps, submitting }) => (
+      {({ formProps }) => (
         <form {...formProps}>
           <Field name="name" label="Name" isRequired defaultValue="">
             {({ fieldProps, error }) => (
@@ -83,6 +86,9 @@ const SignUp = () => {
             )}
           </Field>
 
+          {requestError && (
+            <ErrorMessage>Something went wrong. Please try again!</ErrorMessage>
+          )}
           <FormFooter>
             <ButtonGroup>
               <LinkButton href="/login" appearance="subtle">
@@ -91,7 +97,7 @@ const SignUp = () => {
               <ThemedButton
                 type="submit"
                 appearance="primary"
-                isLoading={submitting}
+                isLoading={requestLoading}
               >
                 Register
               </ThemedButton>

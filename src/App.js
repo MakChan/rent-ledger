@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import styled from "styled-components";
 
 import { useAuthContext } from "./utils/authContext";
-import { HeaderProvider, useHeaderContext } from "./utils/headerContext";
+import { HeaderProvider } from "./utils/headerContext";
 
 import AuthRoute from "./components/AuthRoute";
 import { Loader, Wrapper } from "./components/Loader";

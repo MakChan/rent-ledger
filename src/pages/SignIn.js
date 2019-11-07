@@ -1,32 +1,28 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
-import { ButtonGroup } from "@atlaskit/button";
 import TextField from "@atlaskit/textfield";
-import Form, {
-  Field,
-  FormFooter,
-  ErrorMessage,
-} from "@atlaskit/form";
+import Form, { Field, FormFooter, ErrorMessage } from "@atlaskit/form";
 
-import ThemedButton from "../components/ThemedButton"
-import LinkButton from "../components/LinkButton"
+import ThemedButton from "../components/ThemedButton";
+import LinkButton from "../components/LinkButton";
 
 import { useAuthContext } from "../utils/authContext";
 import { LOG_IN } from "../utils/mutations";
-
 
 const SignIn = () => {
   const { setUser, userState } = useAuthContext();
   const history = useHistory();
 
-  const [logIn, {}] = useMutation(LOG_IN, {
-    onCompleted: data => {
-      setUser(data.logIn);
-      history.push("/");
+  const [logIn, { loading: requestLoading, error: requestError }] = useMutation(
+    LOG_IN,
+    {
+      onCompleted: data => {
+        setUser(data.logIn);
+        history.push("/");
+      }
     }
-  });
+  );
 
   useEffect(() => {
     if (userState.user) history.push("/");
@@ -34,7 +30,7 @@ const SignIn = () => {
 
   return (
     <Form onSubmit={data => logIn({ variables: data })}>
-      {({ formProps, submitting }) => (
+      {({ formProps }) => (
         <form {...formProps}>
           <Field name="username" label="Username" isRequired defaultValue="">
             {({ fieldProps, error }) => (
@@ -51,23 +47,28 @@ const SignIn = () => {
             {({ fieldProps, error, valid }) => (
               <>
                 <TextField type="password" autoComplete="off" {...fieldProps} />
-                {error && <ErrorMessage>Wrong Password</ErrorMessage>}
+                {error && <ErrorMessage>Password too short!</ErrorMessage>}
               </>
             )}
           </Field>
 
+          {requestError && (
+            <ErrorMessage>
+              Username/Password wrong. Please try again!
+            </ErrorMessage>
+          )}
+
           <FormFooter>
-            <ButtonGroup>
-              <LinkButton
-                href="/register"
-                appearance="subtle"
-              >
-                Register
-              </LinkButton>
-              <ThemedButton type="submit" appearance="primary" isLoading={submitting}>
-                Login
-              </ThemedButton>
-            </ButtonGroup>
+            <LinkButton appearance="subtle" href="/register">
+              Register
+            </LinkButton>
+            <ThemedButton
+              type="submit"
+              appearance="primary"
+              isLoading={requestLoading}
+            >
+              Login
+            </ThemedButton>
           </FormFooter>
         </form>
       )}

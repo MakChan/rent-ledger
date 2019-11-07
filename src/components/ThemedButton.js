@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@atlaskit/button";
-import * as colors from "@atlaskit/theme/colors";
+// import * as colors from "@atlaskit/theme/colors";
+import { colors } from "@atlaskit/theme";
 
 const ThemedButton = props => (
   <Button
@@ -57,7 +58,7 @@ const customTheme = {
     color: {
       hover: "#6b46b0",
       active: "#58339b"
-    },
+    }
     // boxShadow: {
     //   default: `1px 2px 0 0 #dcdcdc`,
     //   hover: `1px 2px 0 0 #c0c0c0`,
@@ -71,7 +72,7 @@ const customTheme = {
       default: "#673ab7",
       hover: "#6b46b0",
       active: "#58339b"
-    },
+    }
     // boxShadow: {
     //   default: `1px 2px 0 0 #b895f8`,
     //   hover: `1px 2px 0 0 #a78bda`,
@@ -82,23 +83,19 @@ const customTheme = {
   }
 };
 
-function extract(newTheme, { mode, appearance, state }) {
-  if (!newTheme[appearance]) {
-    return undefined;
-  }
+function extract(newTheme, appearance, state, mode) {
+  if (!newTheme[appearance]) return;
   const root = newTheme[appearance];
   return Object.keys(root).reduce((acc, val) => {
     let node = root;
     [val, state, mode].forEach(item => {
-      if (!node[item]) {
-        return undefined;
-      }
+      if (!node[item]) return;
       if (typeof node[item] !== "object") {
         acc[val] = node[item];
-        return undefined;
+        return;
       }
       node = node[item];
-      return undefined;
+      return;
     });
     return acc;
   }, {});
