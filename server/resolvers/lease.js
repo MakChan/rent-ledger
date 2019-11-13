@@ -59,7 +59,6 @@ export default {
           }
         }
       ]);
-      console.log("leases", leases);
       return leases;
     }
   },

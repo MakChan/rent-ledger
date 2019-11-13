@@ -24,9 +24,11 @@ const paymentSchema = new mongoose.Schema({
   datePaid: {
     type: Date,
     default: Date.now
-  }
+  },
+  // landlord: { type: mongoose.Schema.Types.ObjectId, ref: "Landlord" }
 });
 
-const Payment =  mongoose.models.Payment || mongoose.model("Payment", paymentSchema);
+const Payment =
+  mongoose.models.Payment || mongoose.model("Payment", paymentSchema);
 
 export default Payment;

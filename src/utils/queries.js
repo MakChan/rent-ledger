@@ -63,3 +63,19 @@ export const GET_CURRENT_LEASES = gql`
     }
   }
 `;
+
+export const GET_ALL_PAYMENTS = gql`
+  query {
+    allPayments {
+      _id {
+        month
+        year
+      }
+      id
+      totalElectricity
+      totalPaidElectricity
+      totalPaid
+      count
+    }
+  }
+`;

@@ -17,8 +17,10 @@ import SignUp from "./pages/SignUp";
 const AddTenant = lazy(() => import("./pages/AddTenant"));
 const AddRooms = lazy(() => import("./pages/AddRooms"));
 const Lease = lazy(() => import("./pages/Lease"));
+const EditLease = lazy(() => import("./pages/EditLease"));
 const AcceptPayment = lazy(() => import("./pages/AcceptPayment"));
 const EndLease = lazy(() => import("./pages/EndLease"));
+const Stats = lazy(() => import("./pages/Stats"));
 const NoMatch = lazy(() => import("./pages/NoMatch"));
 
 const Container = styled.div`
@@ -60,9 +62,19 @@ function App() {
             component={Lease}
           />
           <GuardedRoute
+            path="/edit/lease/:roomNo/:leaseId"
+            exact
+            component={EditLease}
+          />
+          <GuardedRoute
             path="/payment/accept"
             exact
             component={AcceptPayment}
+          />
+          <GuardedRoute
+            path="/stats"
+            exact
+            component={Stats}
           />
         </Suspense>
       </Container>

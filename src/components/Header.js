@@ -22,6 +22,7 @@ const Box = styled.div`
   align-items: center;
 `;
 
+
 const Header = props => {
   const history = useHistory();
   const { showSidebar, toggleSidebar } = useHeaderContext();
@@ -44,7 +45,7 @@ const Header = props => {
             Hi, <b>{props.user && props.user.landlord.name}</b>
           </span>
           {!isMobile && (
-            <Button onClick={props.logOut} appearance="link">
+            <Button onClick={props.logOut} appearance="subtle">
               Logout
             </Button>
           )}

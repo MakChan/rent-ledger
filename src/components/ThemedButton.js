@@ -1,11 +1,9 @@
 import React from "react";
 import Button from "@atlaskit/button";
-// import * as colors from "@atlaskit/theme/colors";
 import { colors } from "@atlaskit/theme";
 
 const ThemedButton = props => (
   <Button
-    {...props}
     theme={(currentTheme, themeProps) => {
       const { buttonStyles, ...rest } = currentTheme(themeProps);
       return {
@@ -17,14 +15,15 @@ const ThemedButton = props => (
         ...rest
       };
     }}
+    {...props}
   />
 );
 
 const baseStyles = {
-  border: "none",
-  padding: "0px 15px",
-  borderRadius: "2px",
-  fontWeight: "bold",
+  // border: "none",
+  // padding: "0px 15px",
+  // borderRadius: "2px",
+  // fontWeight: "bold",
   margin: ".25rem"
 };
 
@@ -42,10 +41,10 @@ const baseStyles = {
 
 const customTheme = {
   link: {
-    padding: "0 5px",
-    margin: "0",
+    padding: "10px 15px",
+    margin: "20px",
     color: {
-      default: "#673ab7",
+      default: { light: colors.DN400 },
       hover: "#6b46b0",
       active: "#58339b"
     }

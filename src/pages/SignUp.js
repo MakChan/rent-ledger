@@ -34,7 +34,7 @@ const SignUp = () => {
   return (
     <Form onSubmit={data => createUser({ variables: data })}>
       {({ formProps }) => (
-        <form {...formProps}>
+        <form {...formProps} name="signupForm">
           <Field name="name" label="Name" isRequired defaultValue="">
             {({ fieldProps, error }) => (
               <>

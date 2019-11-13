@@ -8,6 +8,7 @@ import AddCircleIcon from "@atlaskit/icon/glyph/add-circle";
 import CrossCircleIcon from "@atlaskit/icon/glyph/cross-circle";
 import InviteTeamIcon from "@atlaskit/icon/glyph/invite-team";
 import SignOutIcon from "@atlaskit/icon/glyph/sign-out";
+import MediaServicesPresentationIcon from '@atlaskit/icon/glyph/media-services/presentation';
 
 import { isMobile } from "../utils";
 
@@ -41,6 +42,13 @@ function Sidebar({ showSidebar, logOut }) {
       >
         Add Tenant
       </LinkButton>
+      {/* <LinkButton
+        appearance="subtle"
+        href="/lease/edit"
+        iconBefore={<CrossCircleIcon primaryColor="#000" />}
+      >
+        Edit Lease
+      </LinkButton> */}
       <LinkButton
         appearance="subtle"
         href="/lease/end"
@@ -54,6 +62,13 @@ function Sidebar({ showSidebar, logOut }) {
         iconBefore={<AddCircleIcon primaryColor="#000" />}
       >
         Add Rooms
+      </LinkButton>
+      <LinkButton
+        appearance="subtle"
+        href="/stats"
+        iconBefore={<MediaServicesPresentationIcon primaryColor="#000" />}
+      >
+        Stats
       </LinkButton>
 
       {isMobile && (

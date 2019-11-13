@@ -14,10 +14,25 @@ export default gql`
   extend type Query {
     payment(_id: String!): Payment
     payments(_id: String!): [Payment!]
+    allPayments: [AllPaymentPayload!]
   }
 
   extend type Mutation {
     createPayment(payment: PaymentInput, leaseId: String): Payment
+  }
+
+  type AllPaymentPayload {
+    _id: MonthYear
+    id: String
+    totalElectricity: Float
+    totalPaidElectricity: Float
+    totalPaid: Float
+    count: Int
+  }
+
+  type MonthYear {
+    month: String
+    year: String
   }
 
   type Payment {
