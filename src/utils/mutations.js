@@ -51,6 +51,14 @@ export const ADD_TENANT = gql`
   }
 `;
 
+export const EDIT_TENANT = gql`
+  mutation editTenant($lease: LeaseInput!, $tenant: TenantInput!) {
+    editTenantWithLease(lease: $lease, tenant: $tenant) {
+      result
+    }
+  }
+`;
+
 export const END_LEASE = gql`
   mutation endLease($leaseId: String!) {
     endLease(_id: $leaseId) {

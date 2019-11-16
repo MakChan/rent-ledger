@@ -75,12 +75,40 @@ export default {
         landlord: me.landlord,
         tenant: newTenant._id
       });
-      let room = await models.Room.findOneAndUpdate(
+      await models.Room.findOneAndUpdate(
         { _id: lease.room },
         { $set: { currentLease: newLease._id } }
       );
-      console.log("room", room);
       return newLease;
+    },
+    editTenantWithLease: async (parent, { lease, tenant }, { models, me }) => {
+      const { _id: tenantId, ...tenantData } = tenant;
+      const { _id: leaseId, ...leaseData } = lease;
+
+      const updateTenant = models.Tenant.findOneAndUpdate(
+        {
+          _id: tenantId
+        },
+        {
+          ...tenantData
+        }
+      );
+
+      const updateLease = await models.Lease.findOneAndUpdate(
+        {
+          _id: leaseId
+        },
+        {
+          ...leaseData
+        }
+      );
+
+      const promiseList = [];
+      if (Object.keys(tenantData).length > 0) promiseList.push(updateTenant);
+      if (Object.keys(leaseData).length > 0) promiseList.push(updateLease);
+
+      await Promise.all(promiseList);
+      return { result: "Ok" };
     },
     updateLease: async (parent, { _id, lease }, { models }) => {
       return await models.Lease.findOneAndUpdate({ _id: _id }, lease, {

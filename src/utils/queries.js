@@ -22,9 +22,16 @@ export const LEASE_WITH_PAYMENTS = gql`
     leaseWithPayments(_id: $leaseId) {
       _id
       rent
+      initialReading
+      date
+      remark
       current
+      extraCharges
       tenant {
+        _id
         name
+        phoneNumber
+        aadharNumber
       }
       room {
         _id
